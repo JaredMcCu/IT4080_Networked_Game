@@ -1,0 +1,24 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:Template name="LogDisplay" src="project://database/Assets/IT4080/Editor/LogDisplay.uxml?fileID=9197481963319205126&amp;guid=d58fca8ab98b74b478f1295e87001274&amp;type=3#LogDisplay" />
+    <Style src="project://database/Assets/IT4080/Editor/LogViewer.uss?fileID=7433441132597879392&amp;guid=e11d6529eaf854f67b11b043b8808466&amp;type=3#LogViewer" />
+    <ui:Label text="&lt;Info&gt;" display-tooltip-when-elided="true" name="Info" style="-unity-text-align: upper-center;" />
+    <uie:Toolbar>
+        <uie:ToolbarToggle focusable="false" value="true" name="ShowLog1" text="Log 1" tooltip="Show/Hide Log 1" style="flex-shrink: 1; min-width: auto; flex-basis: auto;" />
+        <uie:ToolbarToggle focusable="false" value="true" name="ShowLog2" text="Log 2" tooltip="Show/Hide Log 2" style="flex-shrink: 1;" />
+        <uie:ToolbarToggle focusable="false" value="true" name="ShowLog3" text="Log 3" tooltip="Show/Hide Log 3" style="flex-shrink: 1;" />
+        <uie:ToolbarToggle focusable="false" value="true" name="ShowLog4" text="Log 4" tooltip="Show/Hide Log 4" style="flex-shrink: 1;" />
+        <uie:ToolbarSpacer style="flex-grow: 1;" />
+        <uie:ToolbarToggle focusable="false" text="Auto Refresh" name="AutoRefresh" tooltip="When enabled, logs will refresh every second (if they have changed)" value="false" />
+        <uie:ToolbarButton text="Refresh" display-tooltip-when-elided="true" name="Refresh" tooltip="Refresh all log displays." />
+    </uie:Toolbar>
+    <ui:TwoPaneSplitView orientation="Vertical" name="FourLogs" fixed-pane-initial-dimension="250" style="flex-shrink: 0; height: 300px;">
+        <ui:TwoPaneSplitView name="LogSplit1" fixed-pane-initial-dimension="250">
+            <ui:Instance template="LogDisplay" name="LeftLog" class="Log" />
+            <ui:Instance template="LogDisplay" name="RightLog" class="Log" />
+        </ui:TwoPaneSplitView>
+        <ui:TwoPaneSplitView name="LogSplit2" fixed-pane-initial-dimension="250">
+            <ui:Instance template="LogDisplay" name="LeftLog" class="Log" />
+            <ui:Instance template="LogDisplay" name="RightLog" class="Log" style="-unity-font: initial;" />
+        </ui:TwoPaneSplitView>
+    </ui:TwoPaneSplitView>
+</ui:UXML>
