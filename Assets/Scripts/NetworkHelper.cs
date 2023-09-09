@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 
 public class NetworkHelper : MonoBehaviour
 {
@@ -25,11 +27,11 @@ public class NetworkHelper : MonoBehaviour
         GUILayout.Label("Mode: " + mode);
     }
     public static void GUILayoutNetworkControls() {
-        GUILayoutNetworkControls.BeginArea(new Rect(10, 10, 300, 300));
+        GUILayout.BeginArea(new Rect(10, 10, 300, 300));
         if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer) {
             StartButtons();
         } else {
-            //RunningControls();
+            RunningControls();
         }
         GUILayout.EndArea();
     }
