@@ -13,22 +13,22 @@ private Camera playerCamera;
 private GameObject playerBody;
 private Vector3 initialPosition;
 
-private void Start() {
-    playerCamera = transform.Find("Camera").GetComponent<Camera>();
-    playerCamera.enabled = IsOwner;
-    playerCamera.GetComponent<AudioListener>().enabled = IsOwner;
-    initialPosition = transform.position;
+    private void Start() {
+        playerCamera = transform.Find("Camera").GetComponent<Camera>();
+        playerCamera.enabled = IsOwner;
+        playerCamera.GetComponent<AudioListener>().enabled = IsOwner;
+        initialPosition = transform.position;
 
-    playerBody = transform.Find("PlayerBody").gameObject;
-    ApplyColor();
-}
-private void Update() 
-{
-    if (IsOwner)
+        playerBody = transform.Find("PlayerBody").gameObject;
+        ApplyColor();
+    }
+    private void Update() 
     {
-        OwnerHandleInput();
-    } 
-}
+        if (IsOwner)
+        {
+            OwnerHandleInput();
+        } 
+    }
     private void OwnerHandleInput()
     {
         Vector3 movement = CalcMovement();

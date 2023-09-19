@@ -55,23 +55,21 @@ public class Arena1Game : NetworkBehaviour
     }
 
     private void SpawnPlayers()
-{
-    foreach (ulong clientId in NetworkManager.ConnectedClientsIds)
     {
-        Player playerSpawn;
+        foreach (ulong clientId in NetworkManager.ConnectedClientsIds)
+        {   
+            Player playerSpawn;
         if (clientId == NetworkManager.ServerClientId)
         {
-            // Spawn the PlayerWithCape prefab for the host
             playerSpawn = Instantiate(PlayerWithCapePrefab, NextPosition(), Quaternion.identity);
         }
         else
         {
-            // Spawn the regular Player prefab for other clients
             playerSpawn = Instantiate(playerPrefab, NextPosition(), Quaternion.identity);
         }
 
-        playerSpawn.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
-        playerSpawn.playerColorNetVar.Value = NextColor();
-    }
-}
+            playerSpawn.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+            playerSpawn.playerColorNetVar.Value = NextColor();
+        }
+    }   
 }
