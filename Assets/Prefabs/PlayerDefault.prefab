@@ -50,6 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 50
   rotationSpeed: 130
+  playerColorNetVar:
+    m_InternalValue: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &1058362686516579124
 MonoBehaviour:
   m_ObjectHideFlags: 0

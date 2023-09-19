@@ -11,11 +11,13 @@ public class Player : NetworkBehaviour
 
 private Camera playerCamera;
 private GameObject playerBody;
+private Vector3 initialPosition;
 
 private void Start() {
     playerCamera = transform.Find("Camera").GetComponent<Camera>();
     playerCamera.enabled = IsOwner;
     playerCamera.GetComponent<AudioListener>().enabled = IsOwner;
+    initialPosition = transform.position;
 
     playerBody = transform.Find("PlayerBody").gameObject;
     ApplyColor();
@@ -45,8 +47,25 @@ private void Update()
     [ServerRpc]
     private void MoveServerRpc(Vector3 movement, Vector3 rotation)
     {
-        transform.Translate(movement);
-        transform.Rotate(rotation);
+        Vector3 newPosition = transform.position + movement;
+
+        float minX = -5f;
+        float maxX = 5f;
+        float minZ = -5f;
+        float maxZ = 5f;
+
+
+        bool isHost = IsServer && IsOwner;
+
+        if (isHost || (newPosition.x >= minX && newPosition.x <= maxX && newPosition.z >= minZ && newPosition.z <= maxZ))
+        {
+            transform.Translate(movement);
+            transform.Rotate(rotation);
+        }
+        else
+        {
+            transform.position = initialPosition;
+        }
     }
 
     // Rotate around the y axis when shift is not pressed
