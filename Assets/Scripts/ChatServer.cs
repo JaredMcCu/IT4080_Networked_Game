@@ -9,7 +9,6 @@ public class ChatServer : NetworkBehaviour
     const ulong SYSTEM_ID = ulong.MaxValue;
     private ulong[] dmClientIds = new ulong[2];
 
-    // Start is called before the first frame update
     void Start()
     {
         chatUi.printEnteredText = false;
@@ -18,7 +17,7 @@ public class ChatServer : NetworkBehaviour
         if (IsServer)
         {
             NetworkManager.OnClientConnectedCallback += ServerOnClientConnected;
-            NetworkManager.OnClientDisconnectCallback += ServerOnClientDisconnect; // Add callback for client disconnect
+            NetworkManager.OnClientDisconnectCallback += ServerOnClientDisconnect; 
             if (IsHost)
             {
                 DisplayMessageLocally(SYSTEM_ID, $"You are the host AND client {NetworkManager.LocalClientId}");
@@ -38,18 +37,14 @@ public class ChatServer : NetworkBehaviour
     {
         if (IsHost)
         {
-            // Send a welcome message from the host to the client
             SendWelcomeMessageToClientRpc($"Welcome, I see you Player({clientId}) have connected to the server, well done!", clientId, NetworkManager.LocalClientId);
         }
-
-        // Notify everyone about the client connection
         SendGlobalMessage($"Player {clientId} has connected to the server.");
     }
 
-
     private void ServerOnClientDisconnect(ulong clientId)
     {
-        // Notify everyone about the client disconnection
+
         SendGlobalMessage($"Player {clientId} has disconnected from the server.");
     }
 
@@ -76,42 +71,38 @@ public class ChatServer : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-public void SendChatMessageServerRpc(string message, ServerRpcParams serverRpcParams = default)
-{
-    if (message.StartsWith("@"))
+    public void SendChatMessageServerRpc(string message, ServerRpcParams serverRpcParams = default)
     {
-        string[] parts = message.Split(" ");
-        string clientIdStr = parts[0].Replace("@", "");
-        if (ulong.TryParse(clientIdStr, out ulong toClientId))
+        if (message.StartsWith("@"))
         {
-            if (NetworkManager.Singleton.ConnectedClients.ContainsKey(toClientId))
+            string[] parts = message.Split(" ");
+            string clientIdStr = parts[0].Replace("@", "");
+            if (ulong.TryParse(clientIdStr, out ulong toClientId))
             {
-                // Remove the "@" client ID from the message
-                string whisperMessage = string.Join(" ", parts, 1, parts.Length - 1); // Join from the second part to the end
-                ServerSendDirectMessage(whisperMessage, serverRpcParams.Receive.SenderClientId, toClientId);
+                if (NetworkManager.Singleton.ConnectedClients.ContainsKey(toClientId))
+                {
+                    string whisperMessage = string.Join(" ", parts, 1, parts.Length - 1); 
+                    ServerSendDirectMessage(whisperMessage, serverRpcParams.Receive.SenderClientId, toClientId);
+                }
+                else
+                {
+                SendChatNotificationServerRpc($"The message could not be sent. Player {toClientId} is not connected.", serverRpcParams.Receive.SenderClientId);
+                }
             }
             else
             {
-                // Notify the sender that the message could not be sent
-                SendChatNotificationServerRpc($"The message could not be sent. Player {toClientId} is not connected.", serverRpcParams.Receive.SenderClientId);
+                SendChatNotificationServerRpc($"Invalid client ID: {clientIdStr}", serverRpcParams.Receive.SenderClientId);
             }
         }
         else
         {
-            // Notify the sender that the message could not be sent due to an invalid client ID
-            SendChatNotificationServerRpc($"Invalid client ID: {clientIdStr}", serverRpcParams.Receive.SenderClientId);
+            ReceiveChatMessageClientRpc(message, serverRpcParams.Receive.SenderClientId);
         }
     }
-    else
-    {
-        ReceiveChatMessageClientRpc(message, serverRpcParams.Receive.SenderClientId);
-    }
-}
 
     [ServerRpc(RequireOwnership = false)]
     public void SendChatNotificationServerRpc(string message, ulong targetClientId, ServerRpcParams serverRpcParams = default)
     {
-        // Notify the sender with the provided message
         ReceiveChatMessageClientRpc(message, SYSTEM_ID, new ClientRpcParams { Send = { TargetClientIds = new ulong[] { targetClientId } } });
     }
 
@@ -124,7 +115,6 @@ public void SendChatMessageServerRpc(string message, ServerRpcParams serverRpcPa
     [ClientRpc]
     public void SendWelcomeMessageToClientRpc(string message, ulong targetClientId, ulong fromClientId, ClientRpcParams clientRpcParams = default)
     {
-        // Display the welcome message only to the target client
         if (NetworkManager.LocalClientId == targetClientId)
         {
             DisplayMessageLocally(fromClientId, message);
@@ -141,10 +131,10 @@ public void SendChatMessageServerRpc(string message, ServerRpcParams serverRpcPa
     }
 
     private void SendGlobalMessage(string message)
-{
-    foreach (var client in NetworkManager.Singleton.ConnectedClients)
     {
-        ReceiveChatMessageClientRpc(message, SYSTEM_ID, new ClientRpcParams { Send = { TargetClientIds = new ulong[] { client.Value.ClientId } } });
+        foreach (var client in NetworkManager.Singleton.ConnectedClients)
+        {
+            ReceiveChatMessageClientRpc(message, SYSTEM_ID, new ClientRpcParams { Send = { TargetClientIds = new ulong[] { client.Value.ClientId } } });
+        }
     }
-}
 }
