@@ -6,6 +6,7 @@ using Unity.Netcode.Transports.UTP;
 
 public class NetworkHelper : MonoBehaviour
 {
+    private static NetworkManager netMgr = NetworkManager.Singleton;
     private static void StartButtons() {
         if (GUILayout.Button("Host")) NetworkManager.Singleton.StartHost();
         if (GUILayout.Button("Client")) NetworkManager.Singleton.StartClient();
@@ -19,12 +20,16 @@ public class NetworkHelper : MonoBehaviour
         if (transport != null) {
             serverPort = $"{transport.ConnectionData.Address}:{transport.ConnectionData.Port}";
         }
-        string mode = NetworkManager.Singleton.IsHost ?
-            "Host" : NetworkManager.Singleton.IsServer ? "Server" : "Client";
-
-        if (GUILayout.Button($"Shutdown {mode}")) NetworkManager.Singleton.Shutdown();
+        
+        string mode = GetNetworkMode();
+        if (GUILayout.Button($"Shutdown {mode}")) {
+            netMgr.Shutdown();
+        }
         GUILayout.Label($"Transport: {transportTypeName} [{serverPort}]");
-        GUILayout.Label("Mode: " + mode);
+        GUILayout.Label("Mode: {mode}");
+        if (netMgr.IsClient) {
+            GUILayout.Label($"ClientId = {netMgr.LocalClientId}");
+        }
     }
     public static void GUILayoutNetworkControls() {
         GUILayout.BeginArea(new Rect(10, 10, 300, 300));
@@ -34,5 +39,28 @@ public class NetworkHelper : MonoBehaviour
             RunningControls();
         }
         GUILayout.EndArea();
+    }
+
+    public static string GetNetworkMode() {
+        string type = "nothing";
+        if (netMgr.IsServer) {
+            if (netMgr.IsHost) {
+                type = "host";
+            } else {
+                type = "server";
+            }
+        } else if(netMgr.IsClient) {
+            type = "client";
+        }
+        return type;
+    }
+
+    public static void Log(string msg) {
+        Debug.Log($"[{GetNetworkMode()} {netMgr.LocalClientId}]:  {msg}");
+    }
+    public static void Log(NetworkBehaviour what, string msg)
+    {
+        ulong ownerId = what.GetComponent<NetworkBehaviour>().OwnerClientId;
+        Debug.Log($"[{GetNetworkMode()} {netMgr.LocalClientId}][{what.GetType().Name} {ownerId}]:  {msg}");
     }
 }
