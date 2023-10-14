@@ -5,10 +5,12 @@ using Unity.Netcode;
 
 public class Player : NetworkBehaviour
 {
+    public BulletSpawner bulletSpawner;
+
     public float movementSpeed = 50f;
     public float rotationSpeed = 130f;
     public NetworkVariable<Color> playerColorNetVar = new NetworkVariable<Color>(Color.red);
-
+    
 private Camera playerCamera;
 private GameObject playerBody;
 private Vector3 initialPosition;
@@ -27,6 +29,10 @@ private Vector3 initialPosition;
         if (IsOwner)
         {
             OwnerHandleInput();
+            if (Input.GetButtonDown("Fire1")) {
+                NetworkHelper.Log("Requestiong Fire");
+                FireServerRpc();
+            }
         } 
     }
     private void OwnerHandleInput()
@@ -66,6 +72,13 @@ private Vector3 initialPosition;
         {
             transform.position = initialPosition;
         }
+    }
+
+    [ServerRpc]
+    private void FireServerRpc()
+    {
+        NetworkHelper.Log("Fire");
+        bulletSpawner.Fire();
     }
 
     // Rotate around the y axis when shift is not pressed
