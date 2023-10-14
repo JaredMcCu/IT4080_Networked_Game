@@ -68,7 +68,7 @@ public class Arena1Game : NetworkBehaviour
             playerSpawn = Instantiate(playerPrefab, NextPosition(), Quaternion.identity);
         }
 
-            playerSpawn.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+            playerSpawn.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
             playerSpawn.playerColorNetVar.Value = NextColor();
         }
     }   

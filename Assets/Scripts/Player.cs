@@ -6,6 +6,7 @@ using Unity.Netcode;
 public class Player : NetworkBehaviour
 {
     public BulletSpawner bulletSpawner;
+    public NetworkVariable<int> ScoreNetVar = new NetworkVariable<int>(0);
 
     public float movementSpeed = 50f;
     public float rotationSpeed = 130f;
@@ -23,6 +24,10 @@ private Vector3 initialPosition;
 
         playerBody = transform.Find("PlayerBody").gameObject;
         ApplyColor();
+
+        if (IsClient) {
+            ScoreNetVar.OnValueChanged += ClientOnScoreValueChanged;
+        }
     }
     private void Update() 
     {
@@ -31,7 +36,7 @@ private Vector3 initialPosition;
             OwnerHandleInput();
             if (Input.GetButtonDown("Fire1")) {
                 NetworkHelper.Log("Requestiong Fire");
-                FireServerRpc();
+                bulletSpawner.FireServerRpc();
             }
         } 
     }
@@ -42,6 +47,34 @@ private Vector3 initialPosition;
         if(movement != Vector3.zero || rotation != Vector3.zero)
         {
             MoveServerRpc(movement, rotation);
+        }
+    }
+
+    private void ClientOnScoreValueChanged(int old, int current)
+    {
+        if (IsOwner) {
+            NetworkHelper.Log(this, $"My score is {ScoreNetVar.Value}");
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (IsServer)
+        {
+            ServerHandleCollision(collision);
+        }
+    }
+
+    private void ServerHandleCollision(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("bullet")) {
+        ulong ownerId = collision.gameObject.GetComponent<NetworkObject>().OwnerClientId;
+        NetworkHelper.Log(this,
+            $"Hit by {collision.gameObject.name} " + 
+            $"owned by {ownerId}");
+            Player other = NetworkManager.Singleton.ConnectedClients[ownerId].PlayerObject.GetComponent<Player>();
+            other.ScoreNetVar.Value += 1;
+            Destroy(collision.gameObject);
         }
     }
 
@@ -74,12 +107,7 @@ private Vector3 initialPosition;
         }
     }
 
-    [ServerRpc]
-    private void FireServerRpc()
-    {
-        NetworkHelper.Log("Fire");
-        bulletSpawner.Fire();
-    }
+    
 
     // Rotate around the y axis when shift is not pressed
     private Vector3 CalcRotation() {

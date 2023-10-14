@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 3602160420915223805}
   - component: {fileID: 1058362686516579124}
   - component: {fileID: 1126010501561156941}
+  - component: {fileID: 8025941251336079717}
+  - component: {fileID: 8355939763610753472}
   m_Layer: 0
   m_Name: PlayerDefault
   m_TagString: Untagged
@@ -48,11 +50,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 815180aa6c5276543b4f6ad2cc1ac352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletSpawner: {fileID: 474160742710770632}
+  ScoreNetVar:
+    m_InternalValue: 0
   movementSpeed: 50
   rotationSpeed: 130
   playerColorNetVar:
     m_InternalValue: {r: 1, g: 0, b: 0, a: 1}
-  bulletSpawner: {fileID: 474160742710770632}
 --- !u!114 &1058362686516579124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,6 +107,34 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!54 &8025941251336079717
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311359045319483148}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
+--- !u!114 &8355939763610753472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311359045319483148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1650991992954655509
 GameObject:
   m_ObjectHideFlags: 0
