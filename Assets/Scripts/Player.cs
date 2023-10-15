@@ -65,6 +65,15 @@ private Vector3 initialPosition;
         }
     }
 
+    private void OnTriggerEnter(Collider other) {
+        if (IsServer) {
+            if(other.CompareTag("power_up"))
+            {
+                other.GetComponent<BasePowerUp>().ServerPickUp(this);
+            }
+        }
+    }
+
     private void ServerHandleCollision(Collision collision)
     {
         if(collision.gameObject.CompareTag("bullet")) {
@@ -88,10 +97,10 @@ private Vector3 initialPosition;
     {
         Vector3 newPosition = transform.position + movement;
 
-        float minX = -5f;
-        float maxX = 5f;
-        float minZ = -5f;
-        float maxZ = 5f;
+        float minX = -25f;
+        float maxX = 25f;
+        float minZ = -25f;
+        float maxZ = 25f;
 
 
         bool isHost = IsServer && IsOwner;

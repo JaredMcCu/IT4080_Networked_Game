@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1311359045319483148}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 31.378002, y: 36.761024, z: -20.813555}
+  m_LocalPosition: {x: 31.378002, y: 36.76, z: -20.813555}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -161,7 +161,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1650991992954655509}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.18, z: -3.22}
+  m_LocalPosition: {x: 0, y: 1.65, z: -3.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -264,6 +264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BulletPrefab: {fileID: 8186392987807796049, guid: bb846424402abf9458b5efa4d39e9b2e, type: 3}
+  timeBetweenBullets: 0.5
 --- !u!1 &4019029149343453804
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +276,6 @@ GameObject:
   - component: {fileID: 2212800428751649979}
   - component: {fileID: 2197010682709321154}
   - component: {fileID: 7760505904822781417}
-  - component: {fileID: 1336981343612485716}
   m_Layer: 0
   m_Name: RArm
   m_TagString: Untagged
@@ -349,19 +349,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1336981343612485716
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4019029149343453804}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7083427776282085432
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,7 +360,6 @@ GameObject:
   - component: {fileID: 4995304643199106833}
   - component: {fileID: 6582499497462891313}
   - component: {fileID: 751794508103338548}
-  - component: {fileID: 2394395752865069661}
   m_Layer: 0
   m_Name: LEye
   m_TagString: Untagged
@@ -446,19 +432,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &2394395752865069661
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7083427776282085432}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7373459399373177528
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,7 +544,6 @@ GameObject:
   - component: {fileID: 3736592587615573670}
   - component: {fileID: 2211451048418353907}
   - component: {fileID: 7515914031862923892}
-  - component: {fileID: 3747945119644581875}
   m_Layer: 0
   m_Name: REye
   m_TagString: Untagged
@@ -644,16 +616,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &3747945119644581875
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7455929945499654073}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
