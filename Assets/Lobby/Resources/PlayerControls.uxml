@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="VisualElement">
+        <ui:VisualElement style="flex-direction: row;">
+            <ui:Label text="Ready" display-tooltip-when-elided="true" />
+            <ui:Toggle name="Ready" style="flex-shrink: 1; flex-grow: 1;" />
+        </ui:VisualElement>
+        <ui:Button text="Start" display-tooltip-when-elided="true" name="Start" />
+    </ui:VisualElement>
+    <ui:VisualElement style="flex-direction: row;">
+        <ui:TextField picking-mode="Ignore" text="&lt;Name&gt;" name="player-name" style="flex-grow: 1;" />
+        <ui:Button text="Change" display-tooltip-when-elided="true" name="change-name" />
+    </ui:VisualElement>
+</ui:UXML>

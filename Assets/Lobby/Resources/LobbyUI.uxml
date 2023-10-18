@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Template name="PlayerCards" src="project://database/Assets/Lobby/Resources/PlayerCards.uxml?fileID=9197481963319205126&amp;guid=80d66142227264bccac62b5a2cd59e21&amp;type=3#PlayerCards" />
+    <ui:Template name="PlayerControls" src="project://database/Assets/Lobby/Resources/PlayerControls.uxml?fileID=9197481963319205126&amp;guid=a49d98b8380be4747a53c6db010d6a50&amp;type=3#PlayerControls" />
+    <ui:VisualElement style="flex-direction: row; flex-grow: 1;">
+        <ui:VisualElement name="left" style="flex-grow: 1; width: 10%;">
+            <ui:Instance template="PlayerCards" name="player-cards" style="height: 50%; flex-grow: 1; min-height: auto;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="center" style="flex-grow: 0; flex-direction: row;" />
+        <ui:VisualElement name="right" style="flex-grow: 1; width: 33%; max-width: 50%;">
+            <ui:VisualElement style="flex-grow: 1; width: 20px;" />
+            <ui:Instance template="PlayerControls" name="player-controls" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
