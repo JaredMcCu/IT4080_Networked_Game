@@ -51,7 +51,7 @@ public class Lobby : NetworkBehaviour
             pc.ready = info.ready;
             pc.clientId = info.clientId;
             pc.color = info.color;
-            //pc.playerName = info.playerName.ToString();
+            pc.playerName = info.playerName.ToString();
             if(info.clientId == NetworkManager.LocalClientId)
             {
                 pc.ShowKick(false);
@@ -80,7 +80,7 @@ public class Lobby : NetworkBehaviour
             pc.ready = info.ready;
             pc.clientId = info.clientId;
             pc.color = info.color;
-            //pc.playerName = info.playerName.ToString();
+            pc.playerName = info.playerName.ToString();
             pc.ShowKick(false);
             pc.UpdateDisplay();
         }
@@ -93,7 +93,7 @@ public class Lobby : NetworkBehaviour
         NetworkPlayerInfo myInfo = networkedPlayers.GetMyPlayerInfo();
         if(myInfo.clientId != ulong.MaxValue)
         {
-            //lobbyUi.SetPlayerName(myInfo.playerName.ToString());
+            lobbyUi.SetPlayerName(myInfo.playerName.ToString());
         }
     }
 
