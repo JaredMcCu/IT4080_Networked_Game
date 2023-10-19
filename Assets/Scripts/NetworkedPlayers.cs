@@ -27,25 +27,38 @@ public class NetworkedPlayers : NetworkBehaviour
         if (IsServer)
         {
             ServerStart();
+            NetworkManager.OnClientConnectedCallback += ServerOnClientConnected;
+            NetworkManager.OnClientDisconnectCallback += ServerOnClientDisconnected;
         }
     }
 
     void ServerStart()
     {
-        NetworkManager.OnClientConnectedCallback += ServerOnClientConnected;
+        
 
-        NetworkPlayerInfo info = new NetworkPlayerInfo(NetworkManager.LocalClientId);
-        info.ready = true;
-        info.color = NextColor();
-        allNetPlayers.Add(info);
+        NetworkPlayerInfo host = new NetworkPlayerInfo(NetworkManager.LocalClientId);
+        host.ready = true;
+        host.color = NextColor();
+        //host.playerName = "The Host";
+        allNetPlayers.Add(host);
     }
 
     private void ServerOnClientConnected(ulong clientId)
     {
-        NetworkPlayerInfo info = new NetworkPlayerInfo(clientId);
-        info.ready = false;
-        info.color = NextColor();
-        allNetPlayers.Add(info);
+        NetworkPlayerInfo client = new NetworkPlayerInfo(clientId);
+        client.ready = false;
+        client.color = NextColor();
+        //client.playerName = $"Player {clientId}";
+        allNetPlayers.Add(client);
+    }
+
+    private void ServerOnClientDisconnected(ulong clientId) 
+    {
+        var idx = FindPlayerIndex(clientId);
+        if(idx != -1)
+        {
+            allNetPlayers.RemoveAt(idx);
+        }
     }
 
     private Color NextColor() {
@@ -86,5 +99,38 @@ public class NetworkedPlayers : NetworkBehaviour
         NetworkPlayerInfo info = allNetPlayers[idx];
         info.ready = ready;
         allNetPlayers[idx] = info;
-    }       
+    }    
+
+    public void UpdatePlayerName(ulong clientId, string playerName)
+    {
+        int idx = FindPlayerIndex(clientId);
+        if(idx == -1) {
+            return;
+        }
+
+        NetworkPlayerInfo info = allNetPlayers[idx];
+        //info.playerName = playerName;
+        allNetPlayers[idx] = info;
+    }
+
+    public NetworkPlayerInfo GetMyPlayerInfo()
+    {
+        NetworkPlayerInfo toReturn =  new NetworkPlayerInfo(ulong.MaxValue);
+        int idx = FindPlayerIndex(NetworkManager.LocalClientId);
+        if(idx != -1)
+        {
+            toReturn = allNetPlayers[idx];
+        }
+        return toReturn;
+    }
+
+    public bool AllPLayersReady() {
+        bool theyAre = true;
+        int idx = 0;
+        while(theyAre && idx < allNetPlayers.Count) {
+            theyAre = allNetPlayers[idx].ready;
+            idx += 1;
+        }
+        return theyAre;
+    }
 }
